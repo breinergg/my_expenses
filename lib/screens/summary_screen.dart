@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_expenses/models/expense_data.dart';
 import 'package:my_expenses/screens/transaction_form_screen.dart';
+import 'package:my_expenses/screens/transaction_history_screen.dart';
 import 'package:my_expenses/widgets/expense_chart.dart';
 
 class SummaryScreen extends StatelessWidget {
@@ -12,7 +13,7 @@ class SummaryScreen extends StatelessWidget {
       ExpenseData(120, 'Comida'),
       ExpenseData(300, 'Entretenimiento'),
       ExpenseData(230, 'Comida'),
-      ExpenseData(100, 'Viajes'), // se agrupará en "Otros"
+      ExpenseData(100, 'Otros'), // se agrupará en "Otros"
     ];
 
     // Convertimos la lista en un Map con sumatoria por categoría
@@ -22,7 +23,23 @@ class SummaryScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Resumen de Gastos'), centerTitle: true),
+      appBar: AppBar(
+        title: const Text('Resumen de Gastos'),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (expenseData) => const TransactionHistoryScreen(),
+                ),
+              );
+            },
+            icon: const Icon(Icons.history),
+          ),
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
