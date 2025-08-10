@@ -32,8 +32,8 @@ class TransactionHistoryScreen extends StatelessWidget {
                     child: ListTile(
                       leading: Icon(
                         transaction.type == TransactionType.income
-                            ? Icons.arrow_downward_outlined
-                            : Icons.arrow_upward_outlined,
+                            ? Icons.arrow_upward_outlined
+                            : Icons.arrow_downward_outlined,
                         color:
                             transaction.type == TransactionType.income
                                 ? Colors.green

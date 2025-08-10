@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:my_expenses/models/transaction.dart';
+import 'package:my_expenses/providers/transaction_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 class TransactionFormScreen extends StatefulWidget {
   const TransactionFormScreen({super.key});
@@ -13,6 +17,7 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
   final TextEditingController _descriptionController = TextEditingController();
 
   String _selectedCategory = 'Comida';
+  TransactionType _selectedType = TransactionType.expense;
 
   final List<String> _categories = [
     'Comida',
@@ -70,6 +75,35 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
                 },
               ),
               const SizedBox(height: 20),
+              Row(
+                children: [
+                  Expanded(
+                    child: RadioListTile(
+                      title: const Text('Gasto'),
+                      value: TransactionType.expense,
+                      groupValue: _selectedType,
+                      onChanged: (TransactionType? value) {
+                        setState(() {
+                          _selectedType = value!;
+                        });
+                      },
+                    ),
+                  ),
+                  Expanded(
+                    child: RadioListTile(
+                      title: const Text('Ingreso'),
+                      value: TransactionType.income,
+                      groupValue: _selectedType,
+                      onChanged: (TransactionType? value) {
+                        setState(() {
+                          _selectedType = value!;
+                        });
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
               Center(
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -77,6 +111,19 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
                   ),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
+                      final newTransaction = Transaction(
+                        id: const Uuid().v4(),
+                        category: _selectedCategory,
+                        amount: double.parse(_amountController.text),
+                        type: _selectedType,
+                        date: DateTime.now(),
+                      );
+
+                      Provider.of<TransactionProvider>(
+                        context,
+                        listen: false,
+                      ).addTransactions(newTransaction);
+
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Transaccion Registrada')),
                       );
