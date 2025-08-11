@@ -1,16 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:my_expenses/models/transaction.dart';
+import 'package:my_expenses/providers/transaction_provider.dart';
+import 'package:provider/provider.dart';
 
 class ExpenseChart extends StatelessWidget {
-  final Map<String, double> categoryData;
-
-  ExpenseChart({required this.categoryData});
+  const ExpenseChart({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final transactionProvider = Provider.of<TransactionProvider>(context);
+    final expenses =
+        transactionProvider.transactions
+            .where((tr) => tr.type == TransactionType.expense)
+            .toList();
+
+    final Map<String, double> categoryData = {};
+    for (var tr in expenses) {
+      final category = _normalizeCategory(tr.category);
+      categoryData[category] = (categoryData[category] ?? 0) + tr.amount;
+    }
+
     final List<PieChartSectionData> sections =
         categoryData.entries.map((entry) {
-          final category = _normalizeCategory(entry.key);
+          final category = entry.key;
           final color = _getColorForCategory(category);
 
           return PieChartSectionData(
@@ -39,16 +52,21 @@ class ExpenseChart extends StatelessWidget {
     );
   }
 
-  /// Normaliza la categoría para agrupar las desconocidas en "Otros"
+  /// NORMALIZA CATEGORIA Y AGRUPA DESCONOCIDAS POR ¨OTROS¨
   String _normalizeCategory(String category) {
-    const categoriasValidas = ['Comida', 'Transporte', 'Entretenimiento'];
+    const categoriasValidas = [
+      'Comida',
+      'Transporte',
+      'Entretenimiento',
+      'Otros',
+    ];
     if (!categoriasValidas.contains(category)) {
       return 'Otros';
     }
     return category;
   }
 
-  /// Asigna color por categoría
+  // COLOR POR CATEGORIA
   Color _getColorForCategory(String category) {
     switch (category) {
       case 'Comida':

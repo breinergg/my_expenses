@@ -5,7 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 class TransactionFormScreen extends StatefulWidget {
-  const TransactionFormScreen({super.key});
+  final Transaction? transaction;
+  const TransactionFormScreen({super.key, this.transaction});
 
   @override
   State<TransactionFormScreen> createState() => _TransactionFormScreenState();
@@ -111,26 +112,48 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
                   ),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      final newTransaction = Transaction(
-                        id: const Uuid().v4(),
-                        category: _selectedCategory,
-                        amount: double.parse(_amountController.text),
-                        type: _selectedType,
-                        date: DateTime.now(),
-                      );
+                      final transactionProvider =
+                          Provider.of<TransactionProvider>(
+                            context,
+                            listen: false,
+                          );
 
-                      Provider.of<TransactionProvider>(
-                        context,
-                        listen: false,
-                      ).addTransactions(newTransaction);
-
+                      if (widget.transaction == null) {
+                        transactionProvider.addTransactions(
+                          Transaction(
+                            id: Uuid().v4().toString(),
+                            category: _selectedCategory,
+                            amount: double.parse(_amountController.text),
+                            type: _selectedType,
+                            date: DateTime.now(),
+                          ),
+                        );
+                      } else {
+                        widget.transaction!.category = _selectedCategory;
+                        widget.transaction!.amount = double.parse(
+                          _amountController.text,
+                        );
+                        widget.transaction!.type = _selectedType;
+                        transactionProvider.notifyListeners();
+                      }
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Transaccion Registrada')),
+                        SnackBar(
+                          content: Text(
+                            widget.transaction == null
+                                ? 'Transaccion Registrada'
+                                : 'Transaccion Actualizada',
+                          ),
+                        ),
                       );
                       Navigator.pop(context);
                     }
                   },
-                  child: Text('Guardar Transaccion'),
+                  child: Text(
+                    widget.transaction == null
+                        ? 'Guardar Transaccion'
+                        : 'Transaccion Actualizada',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
                 ),
               ),
             ],

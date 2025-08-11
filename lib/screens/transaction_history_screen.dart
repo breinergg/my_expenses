@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:my_expenses/models/transaction.dart';
 import 'package:my_expenses/providers/transaction_provider.dart';
+import 'package:my_expenses/screens/transaction_form_screen.dart';
 import 'package:provider/provider.dart';
 
 class TransactionHistoryScreen extends StatelessWidget {
@@ -53,6 +54,17 @@ class TransactionHistoryScreen extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder:
+                                (context) => TransactionFormScreen(
+                                  transaction: transaction,
+                                ),
+                          ),
+                        );
+                      },
                       onLongPress: () {
                         transactionProvider.deleteTransaction(transaction.id);
                         ScaffoldMessenger.of(context).showSnackBar(
