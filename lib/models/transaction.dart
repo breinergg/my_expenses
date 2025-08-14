@@ -14,4 +14,14 @@ class Transaction {
     required this.type,
     required this.date,
   });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'category': category,
+      'amount': amount,
+      'type': type == TransactionType.income ? 'income' : 'expense',
+      'date': date.toIso8601String(),
+    };
+  }
 }
