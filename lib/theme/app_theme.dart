@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 
 class AppTheme {
   // Colores principales de la aplicación
-  static const Color primaryColor = Color(
-    0xFF4CAF50,
+  static const Color primaryColor = Color.fromARGB(
+    255,
+    236,
+    113,
+    6,
   ); // Verde para el tema principal
   static const Color accentColor = Color(
     0xFFFFC107,

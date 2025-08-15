@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:my_expenses/models/expense_data.dart';
 import 'package:my_expenses/models/transaction.dart';
 import 'package:my_expenses/providers/transaction_provider.dart';
 import 'package:my_expenses/screens/transaction_form_screen.dart';
@@ -7,8 +6,19 @@ import 'package:my_expenses/screens/transaction_history_screen.dart';
 import 'package:my_expenses/widgets/expense_chart.dart';
 import 'package:provider/provider.dart';
 
-class SummaryScreen extends StatelessWidget {
+class SummaryScreen extends StatefulWidget {
   const SummaryScreen({super.key});
+
+  @override
+  State<SummaryScreen> createState() => _SummaryScreenState();
+}
+
+class _SummaryScreenState extends State<SummaryScreen> {
+  @override
+  void initState() {
+    super.initState();
+    Provider.of<TransactionProvider>(context, listen: false).loadTransactions();
+  }
 
   @override
   Widget build(BuildContext context) {

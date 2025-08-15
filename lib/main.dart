@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Material App',
+      title: 'MY EXPENSES APP',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       home: SummaryScreen(),

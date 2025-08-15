@@ -1,4 +1,3 @@
-import 'package:provider/provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:my_expenses/models/transaction.dart' as my_transaction;

@@ -29,7 +29,13 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Registrar Transaccion')),
+      appBar: AppBar(
+        title: Text(
+          widget.transaction == null
+              ? 'Registrar Transaccion'
+              : 'Editar Transaccion',
+        ),
+      ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Form(
@@ -44,6 +50,10 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Por favor ingrese un monto';
+                  }
+                  final amount = double.tryParse(value);
+                  if (amount! <= 0) {
+                    return 'El monto debe ser mayor que 0';
                   }
                   return null;
                 },
