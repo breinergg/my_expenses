@@ -76,7 +76,6 @@ class _SummaryScreenState extends State<SummaryScreen> {
               ),
             ),
             const SizedBox(height: 20),
-            // Nuevo gráfico adaptado
             ExpenseChart(),
             const SizedBox(height: 20),
             Center(
