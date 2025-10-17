@@ -60,7 +60,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
               'Resumen del Mes',
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
             Card(
               child: ListTile(
                 leading: Icon(Icons.arrow_upward_outlined, color: Colors.green),
